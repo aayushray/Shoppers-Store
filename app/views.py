@@ -3,6 +3,8 @@ from unicodedata import category
 from django.shortcuts import render
 from django.views import View
 from app.models import Product
+from .forms import *
+from django.contrib import messages
 
 # def home(request):
 #  return render(request, 'app/home.html')
@@ -52,14 +54,27 @@ def mobile(request,data = None):
         mobiles = Product.objects.filter(category='M').filter(brand='Oppo')
     elif data == 'Redmi':
         mobiles = Product.objects.filter(category='M').filter(brand='Vivo')
+    elif data == 'below':
+        mobiles = Product.objects.filter(category='M').filter(discounted_price__lt=10000)
+    elif data == 'above':
+        mobiles = Product.objects.filter(category='M').filter(discounted_price__gt=10000)
 
     return render(request, 'app/mobile.html',{'mobiles':mobiles})
 
 def login(request):
  return render(request, 'app/login.html')
 
-def customerregistration(request):
- return render(request, 'app/customerregistration.html')
+class CustomerRegistrationView(View):
+    def get(self,request):
+        form = CustomerRegisterationForm()
+        return render(request, 'app/customerregistration.html',{'form':form})
+
+    def post(self,request):
+        form = CustomerRegisterationForm(request.POST)
+        if form.is_valid:
+            messages.success(request, 'User Successfully Registered')
+            form.save()
+        return render(request, 'app/customerregistration.html',{'form':form})
 
 def checkout(request):
  return render(request, 'app/checkout.html')
