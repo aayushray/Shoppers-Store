@@ -1,6 +1,6 @@
-from itertools import product
+# from itertools import product
 from unicodedata import category
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from app.models import Product
 from .forms import *
@@ -26,13 +26,36 @@ class ProductDetailView(View):
 #  return render(request, 'app/productdetail.html')
 
 def add_to_cart(request):
- return render(request, 'app/addtocart.html')
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    product = Product.objects.get(id=product_id)
+    Cart(user=user,product=product).save()
+    return redirect('/cart')
+
+def show_cart(request):
+    if request.user.is_authenticated:
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        amount = 0.0
+        shipping_amount = 70.0
+        total = 0.0
+        # cart_product = [p for p in Cart.objects.all() if p.user == user]
+
+        if cart:
+            for p in cart:
+                temp_amount = p.quantity * p.product.discounted_price
+                amount += temp_amount
+                total_amount = amount + shipping_amount
+            return render(request, 'app/addtocart.html',{'carts':cart,'total_amount':total_amount,'amount':amount,'shipping_amount':shipping_amount})
+        else:
+            return render(request,'app/emptycart.html')
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
 
 def address(request):
- return render(request, 'app/address.html')
+    add = Customer.objects.filter(user=request.user)
+    return render(request, 'app/address.html',{'add':add,'activate':'btn-primary'})
 
 def orders(request):
  return render(request, 'app/orders.html')

@@ -37,7 +37,7 @@ STATE_CHOICES = (
     ('Rajasthan','Rajasthan'),
     ('Sikkim','Sikkim'),
     ('Tamil Nadu','Tamil Nadu'),
-    ('Telangana','Telangana'),
+    ('Telangana','Telangana'), 
     ('Tripura','Tripura'),
     ('Uttarakhand','Uttarakhand'),
     ('Uttar Pradesh','Uttar Pradesh'),
