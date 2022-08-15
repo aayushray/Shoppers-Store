@@ -7,6 +7,8 @@ from .forms import *
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 # def home(request):
 #  return render(request, 'app/home.html')
@@ -126,7 +128,8 @@ def address(request):
     return render(request, 'app/address.html',{'add':add,'activate':'btn-primary'})
 
 def orders(request):
- return render(request, 'app/orders.html')
+    op = OrderPlaced.objects.filter(user=request.user)
+    return render(request, 'app/orders.html', {'order_placed':op})
     
 def mobile(request,data = None):
     if data == None:
@@ -177,8 +180,15 @@ def checkout(request):
     return render(request, 'app/checkout.html',{'add':add,'totalamount':total_amount,'cart_items':cart_items})
 
 def payment_done(request):
-    custid = request.user
-    return render(request,'paymentdone.html')
+    user = request.user
+    custid = request.GET.get('custid')
+    customer = Customer.objects.get(id = custid)
+    cart = Cart.objects.filter(user=user)
+    for c in cart:
+        OrderPlaced(user=user,customer=customer,product=c.product,quantity=c.quantity).save()
+        c.delete()
+    return redirect("orders")
+
 
 class ProfileView(View):
     def get(self,request):
