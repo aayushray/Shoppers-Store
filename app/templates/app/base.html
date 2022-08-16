@@ -22,9 +22,9 @@
     <title>Shoppers Store | {% block title %} {% endblock title %} </title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
      <div class="container">
-       <a class="navbar-brand" href="/">ShoppingX</a>
+       <a class="navbar-brand" href="/">Shoppers Shop</a>
        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
        </button>
@@ -73,7 +73,7 @@
               </ul>
             </li>
             <li class="nav-item mx-2">
-             <a href="{% url 'show_cart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart </a>
+             <a href="{% url 'show_cart' %}" class="nav-link text-white"><span class="badge bg-danger"></span> Cart </a>
             </li>
           {% else %}
             <li class="nav-item mx-2">
