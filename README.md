@@ -1,6 +1,8 @@
 # Shoppers-Store
 
 The repository contains web pages using Django web development framework in python language. This project has been made, in an approach to make the selling of the items, quite easier for the shop keeper's and the consumer's can easily see all the items that are being sold.
+
+This website has been integrated with Paypal Payment Gateway, for smooth transactions.
  
 ## Getting Started
  
